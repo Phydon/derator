@@ -5,7 +5,7 @@ use std::{io, thread};
 use std::char;
 
 const NUM: usize = 10;
-const NUM_SYM: usize = 6;
+const NUM_SYM: usize = 10;
 
 fn main() {
     let lst: [String; NUM] = [
@@ -27,7 +27,11 @@ fn main() {
         char::from_u32(128545).unwrap(),
         char::from_u32(128565).unwrap(),
         char::from_u32(9875).unwrap(),
-        char::from_u32(9889).unwrap()
+        char::from_u32(9889).unwrap(),
+        char::from_u32(9762).unwrap(),
+        char::from_u32(9763).unwrap(),
+        char::from_u32(9760).unwrap(),
+        char::from_u32(9883).unwrap()
     ];
 
     let mut n: u64 = 1;
@@ -41,27 +45,27 @@ fn main() {
             generate_symbol(&symbols);
             println!("{}  <<   Du als nächstes", name.to_uppercase());
         } else if i < 49 && i > 45 {
-            hourglass();
+            hourglass(1);
             println!(">>   {}", name);
             sleep(n);
             n += 100;
         } else if i < 45 && i > 40 {
-            hourglass();
+            hourglass(2);
             println!(">>   {}", name);
             sleep(n);
             n += 60;
         } else if i < 40 && i > 33 {
-            hourglass();
+            hourglass(2);
             println!(">>   {}", name);
             sleep(n);
             n += 30;
         } else if i < 33 && i > 22 {
-            hourglass();
+            hourglass(2);
             println!(">>   {}", name);
             sleep(n);
             n += 10;
         } else if i < 22 {
-            hourglass();
+            hourglass(2);
             println!(">>   {}", name);
             sleep(n);
             n += 6;
@@ -89,9 +93,16 @@ fn generate(lst: &[String; NUM]) -> String {
     return name.to_string();
 }
 
-fn hourglass() {
-    let hglass = char::from_u32(8987).unwrap();
-    println!("       {}\n", hglass);
+fn hourglass(a: u8) {
+    if a == 1 {
+        let hglass = char::from_u32(8987).unwrap();
+        println!("       {}\n", hglass);
+    } else if a == 2 {
+        let hglass = char::from_u32(9203).unwrap();
+        println!("       {}\n", hglass);
+    } else {
+        eprintln!("no symbol available");
+    }
 
 }
 
