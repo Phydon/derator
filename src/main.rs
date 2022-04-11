@@ -2,8 +2,10 @@ use rand::Rng;
 use std::process::Command;
 use std::time::Duration;
 use std::{io, thread};
+use std::char;
 
 const NUM: usize = 10;
+const NUM_SYM: usize = 6;
 
 fn main() {
     let lst: [String; NUM] = [
@@ -19,6 +21,15 @@ fn main() {
         "Ludwig".to_string()
     ];
 
+    let symbols: [char; NUM_SYM] = [
+        char::from_u32(127917).unwrap(),
+        char::from_u32(128520).unwrap(),
+        char::from_u32(128545).unwrap(),
+        char::from_u32(128565).unwrap(),
+        char::from_u32(9875).unwrap(),
+        char::from_u32(9889).unwrap()
+    ];
+
     let mut n: u64 = 1;
     for i in 1..50 {
         exec_clear().expect("Failed to clear screen");
@@ -27,25 +38,31 @@ fn main() {
         let name: String = generate(&lst);
         
         if i == 49 {
-            println!("{} << Du als nächstes", name.to_uppercase());
+            generate_symbol(&symbols);
+            println!("{}  <<   Du als nächstes", name.to_uppercase());
         } else if i < 49 && i > 45 {
-            println!(">> {}", name);
+            hourglass();
+            println!(">>   {}", name);
             sleep(n);
             n += 100;
         } else if i < 45 && i > 40 {
-            println!(">> {}", name);
+            hourglass();
+            println!(">>   {}", name);
             sleep(n);
             n += 60;
         } else if i < 40 && i > 33 {
-            println!(">> {}", name);
+            hourglass();
+            println!(">>   {}", name);
             sleep(n);
             n += 30;
         } else if i < 33 && i > 22 {
-            println!(">> {}", name);
+            hourglass();
+            println!(">>   {}", name);
             sleep(n);
             n += 10;
         } else if i < 22 {
-            println!(">> {}", name);
+            hourglass();
+            println!(">>   {}", name);
             sleep(n);
             n += 6;
         }
@@ -70,4 +87,16 @@ fn generate(lst: &[String; NUM]) -> String {
     let r = rand::thread_rng().gen_range(1..NUM);
     let name =  &lst[r];
     return name.to_string();
+}
+
+fn hourglass() {
+    let hglass = char::from_u32(8987).unwrap();
+    println!("       {}\n", hglass);
+
+}
+
+fn generate_symbol(symbols: &[char; NUM_SYM]) {
+    let r = rand::thread_rng().gen_range(1..NUM_SYM);
+    let sym =  &symbols[r];
+    println!("       {}\n", sym);
 }
