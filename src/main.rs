@@ -123,23 +123,13 @@ fn quit() -> bool {
     loop {
         println!("\n\nBeenden? (J/N):");
 
-        let yes: [u8; 1] = *b"J";
-        let no: [u8; 1] = *b"N";
         let mut input = String::new();
         io::stdin().read_line(&mut input).expect("Failed to read input");
-        let input = input.strip_suffix('\n').unwrap().to_uppercase();
 
-        if input.is_empty() {
-            println!("Bitte \"J\" für Ja eingeben oder \"N\" für Nein.");
-            sleep(1300);
-        } else {
-            let input_bytes = input.as_bytes()[0];
-
-            if input_bytes.eq(&yes[0])  {
-                return true;
-            } else if input_bytes.eq(&no[0]) {
-                return false;
-            } else {
+        match input.trim() {
+            "j" | "J" => return true,
+            "n" | "N" => return false,
+            _ => {
                 println!("Keine gültige Eingabe");
                 println!("Bitte \"J\" für Ja eingeben oder \"N\" für Nein.");
                 sleep(1300);
