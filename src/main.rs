@@ -124,7 +124,7 @@ fn hourglass(a: u8) {
 fn generate_symbol(symbols: &[char; NUM_SYM]) {
     let r = rand::thread_rng().gen_range(1..NUM_SYM);
     let sym =  &symbols[r];
-    println!("                   {}\n", sym);
+    println!("                     {}\n", sym);
 }
 
 fn quit() -> bool {
