@@ -52,7 +52,8 @@ fn main() {
             if i == 49 {
                 generate_symbol(&symbols);
                 let txt = "du als nächstes".dimmed().italic();
-                println!("            {}  <<   {}", name.to_uppercase().red().blink(), txt);
+                println!("               >>   {}", name.to_uppercase().red().blink());
+                println!("               {}", txt);
             } else if i < 49 && i > 45 {
                 hourglass(1);
                 println!("               >>   {}", name.red());
