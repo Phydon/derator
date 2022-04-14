@@ -1,8 +1,9 @@
 use rand::Rng;
+use colored::*;
+
 use std::process::Command;
 use std::time::Duration;
-use std::{io, thread};
-use std::char;
+use std::{io, thread, char};
 
 const NUM: usize = 10;
 const NUM_SYM: usize = 10;
@@ -39,35 +40,42 @@ fn main() {
         for i in 1..50 {
             exec_clear().expect("Failed to clear screen");
 
-            println!("\\\\ GENERATOR //\n");
+            let title = title().blue();
+            println!("{}", title);
+            // let title = "GENERATOR".blue().underline().bold();
+            // println!("\\\\ {} //\n", title);
+
+            // println!("\\\\ GENERATOR //\n");
+
             let name: String = generate(&lst);
             
             if i == 49 {
                 generate_symbol(&symbols);
-                println!("{}  <<   du als nächstes", name.to_uppercase());
+                let txt = "du als nächstes".dimmed().italic();
+                println!("            {}  <<   {}", name.to_uppercase().red().blink(), txt);
             } else if i < 49 && i > 45 {
                 hourglass(1);
-                println!(">>   {}", name);
+                println!("               >>   {}", name.red());
                 sleep(n);
                 n += 100;
             } else if i < 45 && i > 40 {
                 hourglass(2);
-                println!(">>   {}", name);
+                println!("               >>   {}", name);
                 sleep(n);
                 n += 60;
             } else if i < 40 && i > 33 {
                 hourglass(2);
-                println!(">>   {}", name);
+                println!("               >>   {}", name);
                 sleep(n);
                 n += 30;
             } else if i < 33 && i > 22 {
                 hourglass(2);
-                println!(">>   {}", name);
+                println!("               >>   {}", name);
                 sleep(n);
                 n += 10;
             } else if i < 22 {
                 hourglass(2);
-                println!(">>   {}", name);
+                println!("               >>   {}", name);
                 sleep(n);
                 n += 6;
             }
@@ -103,10 +111,10 @@ fn generate(lst: &[String; NUM]) -> String {
 fn hourglass(a: u8) {
     if a == 1 {
         let hglass = char::from_u32(8987).unwrap();
-        println!("       {}\n", hglass);
+        println!("                    {}\n", hglass);
     } else if a == 2 {
         let hglass = char::from_u32(9203).unwrap();
-        println!("       {}\n", hglass);
+        println!("                    {}\n", hglass);
     } else {
         eprintln!("no symbol available");
     }
@@ -116,7 +124,7 @@ fn hourglass(a: u8) {
 fn generate_symbol(symbols: &[char; NUM_SYM]) {
     let r = rand::thread_rng().gen_range(1..NUM_SYM);
     let sym =  &symbols[r];
-    println!("       {}\n", sym);
+    println!("                   {}\n", sym);
 }
 
 fn quit() -> bool {
@@ -136,4 +144,13 @@ fn quit() -> bool {
             }
         }
     }
+}
+
+fn title() -> String {
+let title = "
+░▒█▀▀█░█▀▀░█▀▀▄░█▀▀░█▀▀▄░█▀▀▄░▀█▀░▄▀▀▄░█▀▀▄
+░▒█░▄▄░█▀▀░█░▒█░█▀▀░█▄▄▀░█▄▄█░░█░░█░░█░█▄▄▀
+░▒█▄▄▀░▀▀▀░▀░░▀░▀▀▀░▀░▀▀░▀░░▀░░▀░░░▀▀░░▀░▀▀
+".to_string();
+ title
 }
