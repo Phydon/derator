@@ -1,6 +1,8 @@
 use rand::Rng;
 use colored::*;
+use indicatif::{ProgressBar, ProgressStyle};
 
+use std::cmp::min;
 use std::process::Command;
 use std::time::Duration;
 use std::{io, thread, char};
@@ -103,6 +105,25 @@ fn exec_clear() -> io::Result<()> {
     }
 }
 
+fn progress_bar() {
+    let mut idx = 0;
+    let end = 1000;
+
+    let pb = ProgressBar::new(end);
+    pb.set_style(ProgressStyle::default_bar()
+        .template("{spinner:.green} [{wide_bar:.cyan/blue}] ({eta})")
+        .progress_chars("#>-"));
+
+    while idx < end {
+        let new = min(idx + 20, end);
+        idx = new;
+        pb.set_position(new);
+        sleep(15);
+    }
+
+    pb.finish_with_message("done");
+}
+
 fn generate(lst: &[String; NUM]) -> String {
     let r = rand::thread_rng().gen_range(1..NUM);
     let name =  &lst[r];
@@ -140,8 +161,8 @@ fn quit() -> bool {
             "n" | "N" => return false,
             _ => {
                 println!("Keine gültige Eingabe");
-                println!("Bitte \"J\" für Ja eingeben oder \"N\" für Nein.");
-                sleep(1300);
+                println!("Bitte \"J\" für Ja eingeben oder \"N\" für Nein.\n");
+                progress_bar();
             }
         }
     }
