@@ -115,13 +115,15 @@ fn progress_bar() {
         .progress_chars("#>-"));
 
     while idx < end {
-        let new = min(idx + 20, end);
+        let new = min(idx + 6, end);
         idx = new;
         pb.set_position(new);
         sleep(15);
     }
 
     pb.finish_with_message("done");
+
+    exec_clear().expect("Failed to clear screen");
 }
 
 fn generate(lst: &[String; NUM]) -> String {
