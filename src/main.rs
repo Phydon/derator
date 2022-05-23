@@ -5,25 +5,16 @@ use indicatif::{ProgressBar, ProgressStyle};
 use std::cmp::min;
 use std::process::Command;
 use std::time::Duration;
-use std::{io, thread, char};
+use std::io::Read;
+use std::{io, fs, thread, char, str};
 
-const NUM: usize = 10;
 const NUM_SYM: usize = 10;
+const FILEPATH: &str = "./names.txt";
 
 fn main() {
+
     loop {
-        let lst: [String; NUM] = [
-            "Max".to_string(), 
-            "Günther".to_string(), 
-            "Julia".to_string(), 
-            "Gustav".to_string(), 
-            "Marie".to_string(), 
-            "Uwe".to_string(), 
-            "Luise".to_string(), 
-            "Knut".to_string(), 
-            "Pauline".to_string(), 
-            "Ludwig".to_string()
-        ];
+        let lst = read_file();
 
         let symbols: [char; NUM_SYM] = [
             char::from_u32(127917).unwrap(),
@@ -91,6 +82,20 @@ fn main() {
     std::process::exit(0);
 }
 
+fn read_file() -> Vec<String> {
+    let mut file = fs::OpenOptions::new()
+        .read(true)
+        .open(FILEPATH)
+        .expect("Failed to open file");
+
+    let mut content = String::new();
+    file.read_to_string(&mut content).expect("Unable to read file");
+
+    let storage = content.split_whitespace().map(str::to_string).collect();
+
+    storage
+    }
+
 fn sleep(num: u64) {
     thread::sleep(Duration::from_millis(num));
 }
@@ -126,8 +131,9 @@ fn progress_bar() {
     exec_clear().expect("Failed to clear screen");
 }
 
-fn generate(lst: &[String; NUM]) -> String {
-    let r = rand::thread_rng().gen_range(1..NUM);
+fn generate(lst: &Vec<String>) -> String {
+    let len_lst = lst.len();
+    let r = rand::thread_rng().gen_range(1..len_lst);
     let name =  &lst[r];
     return name.to_string();
 }
