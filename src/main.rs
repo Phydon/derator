@@ -3,7 +3,7 @@ use colored::*;
 use indicatif::{ProgressBar, ProgressStyle};
 
 use std::cmp::min;
-use std::process::Command;
+// use std::process::Command;
 use std::time::Duration;
 use std::io::Read;
 use std::{io, fs, thread, char, str};
@@ -31,7 +31,8 @@ fn main() {
 
         let mut n: u64 = 1;
         for i in 1..50 {
-            exec_clear().expect("Failed to clear screen");
+            // exec_clear().expect("Failed to clear screen");
+            clear_screen();
 
             let title = title().blue();
             println!("{}", title);
@@ -100,14 +101,20 @@ fn sleep(num: u64) {
     thread::sleep(Duration::from_millis(num));
 }
 
-fn exec_clear() -> io::Result<()> {
-    if cfg!(target_os = "windows") {
-        Command::new("cmd").args(["/C", "cls"]).status()?;
-        Ok(())
-    } else {
-        Command::new("clear").status()?;
-        Ok(())
-    }
+// fn exec_clear() -> io::Result<()> {
+//     if cfg!(target_os = "windows") {
+//         Command::new("cmd").args(["/C", "cls"]).status()?;
+//         Ok(())
+//     } else {
+//         Command::new("clear").status()?;
+//         Ok(())
+//     }
+// }
+
+fn clear_screen() {
+    /* Clears the terminal with an ANSI escape code.
+    Works in UNIX and newer Windows terminals. */
+    println!("\x1Bc");
 }
 
 fn progress_bar() {
@@ -128,7 +135,8 @@ fn progress_bar() {
 
     pb.finish_with_message("done");
 
-    exec_clear().expect("Failed to clear screen");
+    // exec_clear().expect("Failed to clear screen");
+    clear_screen();
 }
 
 fn generate(lst: &Vec<String>) -> String {
